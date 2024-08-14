@@ -1,0 +1,22 @@
+<launch>
+    <arg name="run_offline"     default="true"  doc=""/>
+    <arg name="offline_camera_rate"     default="4"  doc=""/>
+    <arg name="lane_number"     default=""                                                 doc="lane number should not be zero/negative and duplicate"/>
+    <arg name="video_file_path" default="$(find multilane_sorter)/assets/demo_onion_1.mp4"  doc="video file name to run in offline mode"/>
+    <arg name="serialnumber"    default=""                                                  doc="Camera serial number"/>
+    <arg name="first_cam"       default=""                                                  doc=""/>
+    <arg name="pulse_capture"   default=""                                                  doc="FE/RE"/>
+    <arg name="respawn"         default="false"                                             doc="rerun node if crashed?"/>
+    <arg name="respawn_delay"   default="0"                                                 doc="time to sleep after node crashed and before rerun"/>
+
+    <node name="camera_node" pkg="multilane_sorter" type="cameraNode.py"  output="screen" respawn="false" respawn_delay="0">
+        <param name="lane"              value="$(arg lane_number)"/>
+        <param name="run_offline"       value="$(arg run_offline)"/>
+        <param name="offline_camera_rate"       value="$(arg offline_camera_rate)"/>
+        <param name="video_file_path"   value="$(arg video_file_path)"/>
+        <param name="serialnumber"      value="$(arg serialnumber)"/>
+        <param name="first_cam"         value="$(arg first_cam)"/>
+        <param name="pulse_capture"     value="$(arg pulse_capture)"/>
+    </node>
+      
+</launch>

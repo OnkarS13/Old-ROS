@@ -1,0 +1,30 @@
+<launch>
+    <arg name="offline" default="true"/>
+
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+        <arg name="port" value="9090"/>
+    </include>
+    
+        <node pkg="multilane_sorter" type="preprocessingClassifier.py" name="preprocessing_node" output = "screen">
+            <param name="~mask_threshold"  value="22"/>
+            <param name="~camera_id_1"  value="camera_11"/>
+            <param name="~camera_id_2"  value="camera_12"/>
+        </node> 
+            
+        <node pkg="multilane_sorter" type="decisionNode.py" name="decision_inference" output="screen">    
+        </node>
+    
+        <node name="signaling_node" pkg="multilane_sorter" type="signals.py" output = "screen" > 
+            <param name="arduino_num"  value="1"/>
+        </node>
+
+
+        <!-- <node pkg="multilane_sorter" type="postprocessingNode.py" name="postProcessing" output ="screen">
+            
+        </node> -->
+
+   <node name="GUINode" pkg="multilane_sorter" type="guiDataNode.py" output = "screen" />
+
+
+
+</launch>

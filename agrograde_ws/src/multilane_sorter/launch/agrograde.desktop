@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Terminal=true
+TerminalOptions=bash
+Exec=bash -c "source /opt/ros/noetic/setup.bash;source ~/sayooj_ws/devel/setup.bash;/home/agrograde/sayooj_ws/src/multilane_sorter/launch/start.sh"
+Icon=/home/agrograde/jalna_ws/src/multilane_sorter/launch/agrograde.ico
+Name=Agrograde

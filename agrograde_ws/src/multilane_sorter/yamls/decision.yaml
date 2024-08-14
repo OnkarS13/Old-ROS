@@ -1,0 +1,102 @@
+decisionParams:
+  decision:
+    size:
+      A:
+        max: 55
+        min: 40
+  defectSorting:
+    defectClass:
+      def_0: sprout
+      def_1: peeled
+      def_2: rotten
+      def_3: black_smut
+      def_4: double
+      
+    tolerances:
+      summer:
+        highQuality:  
+          defect:
+            def_0: 0.50
+            def_1: 15
+            def_2: 2
+            def_3: 0.50
+            def_4: 2
+        lowQuality:
+          defect:
+            def_0: 10
+            def_1: 76
+            def_2: 20
+            def_3: 10
+            def_4: 20
+        mediumQuality:
+          defect:
+            def_0: 40
+            def_1: 90
+            def_2: 20
+            def_3: 10
+            def_4: 20
+      winter:
+        highQuality:
+          defect:
+            def_0: 6
+            def_1: 6
+            def_2: 20
+            def_3: 6
+            def_4: 20
+        lowQuality:
+          defect:
+            def_0: 20
+            def_1: 35
+            def_2: 20
+            def_3: 20
+            def_4: 20
+        mediumQuality:
+          defect:
+            def_0: 15
+            def_1: 25
+            def_2: 20
+            def_3: 20
+            def_4: 20
+    total_defect: 5
+
+
+
+
+    # decisionParams:
+#   decision:
+#     size:
+#       A:
+#         max: 100
+#         min: 65
+#   defectSorting:
+#     defectClass:
+#       def_0: Black Smut
+#       def_1: Peeled
+#     tolerances:
+#       summer:
+#         highQuality:
+#           defect:
+#             def_0: 15
+#             def_1: 20
+#         lowQuality:
+#           defect:
+#             def_0: 10
+#             def_1: 76
+#         mediumQuality:
+#           defect:
+#             def_0: 40
+#             def_1: 90
+#       winter:
+#         highQuality:
+#           defect:
+#             def_0: 6
+#             def_1: 6
+#         lowQuality:
+#           defect:
+#             def_0: 20
+#             def_1: 35
+#         mediumQuality:
+#           defect:
+#             def_0: 15
+#             def_1: 25
+#     total_defect: 5

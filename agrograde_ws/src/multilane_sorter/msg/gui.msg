@@ -1,0 +1,16 @@
+Header header
+string sensorStatus
+string internetStatus
+string dataUploadStatus
+string systemWarning
+string guiWarning
+string throughputOverAll
+string throughputAccepted
+string throughputRejected
+string sortingUptime
+string systemUptime
+string actuatorStats
+sensor_msgs/CompressedImage lane_1
+sensor_msgs/CompressedImage lane_2
+sensor_msgs/CompressedImage lane_3
+sensor_msgs/CompressedImage lane_4

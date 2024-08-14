@@ -1,0 +1,20 @@
+{
+	"folders": [],
+	"settings": {
+		"python.autoComplete.extraPaths": [
+			"/home/agrograde/agrograde_ws/devel/lib/python3/dist-packages",
+			"/home/agrograde/test_ws/devel/lib/python3/dist-packages",
+			"/home/agrograde/jalna_ws/devel/lib/python3/dist-packages",
+			"/home/agrograde/single_channel_ws/devel/lib/python3/dist-packages",
+			"/opt/ros/noetic/lib/python3/dist-packages"
+		],
+		"python.analysis.extraPaths": [
+			"/home/agrograde/agrograde_ws/devel/lib/python3/dist-packages",
+			"/home/agrograde/test_ws/devel/lib/python3/dist-packages",
+			"/home/agrograde/jalna_ws/devel/lib/python3/dist-packages",
+			"/home/agrograde/single_channel_ws/devel/lib/python3/dist-packages",
+			"/opt/ros/noetic/lib/python3/dist-packages"
+		],
+		"ros.distro": "noetic"
+	}
+}

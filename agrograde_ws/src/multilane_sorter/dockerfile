@@ -1,0 +1,32 @@
+FROM ros_1
+
+RUN cd &&\
+    mkdir catkin_ws 
+
+WORKDIR /~/catkin_ws
+
+
+RUN /bin/bash -c "source /~/underlay_ws/devel_isolated/setup.bash ; mkdir src ; catkin_make"
+RUN cd src &&\
+    /bin/bash -c "source /~/underlay_ws/devel_isolated/setup.bash ; catkin_create_pkg sorter std_msgs rospy roscpp " &&\
+    cd sorter &&\
+    rm CMakeLists.txt &&\
+    rm package.xml 
+
+COPY ./sorter/CMakeLists.txt /~/catkin_ws/src/sorter/
+COPY ./sorter/package.xml /~/catkin_ws/src/sorter/
+COPY ./sorter/msg /~/catkin_ws/src/sorter/msg/
+
+RUN /bin/bash -c "source /~/underlay_ws/devel_isolated/setup.bash ; catkin_make"
+
+WORKDIR /~/catkin_ws/src/sorter/src/
+
+COPY ./sortobot ./sortobot
+
+RUN cd sortobot &&\
+    pip3 install -r requirement.txt 
+
+RUN pip3 uninstall -y pyserial &&\
+    pip3 install pyserial google-cloud-storage
+
+WORKDIR /~/catkin_ws/src/sorter/src/sortobot/

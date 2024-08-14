@@ -1,0 +1,65 @@
+<launch>
+    <arg name="offline" default="false"/>
+    <arg name="offline_camera_rate"     default="4"  doc=""/>    
+    <!-- lane_1 -->
+    <arg name="lane_1"                 default="true"/>
+    <arg name="config_file_act" default="$(find multilane_sorter)/config/camera_11.yaml" />
+    <arg name="config_file_nonact" default="$(find multilane_sorter)/config/camera_12.yaml" />
+ 
+    
+    <!-- lane_2 -->
+    <arg name="lane_2"                 default="true"/>
+    <arg name="config_file_act2" default="$(find multilane_sorter)/config/camera_21.yaml" />
+    <arg name="config_file_nonact2" default="$(find multilane_sorter)/config/camera_22.yaml" />
+ 
+    <rosparam command="load" file="$(find multilane_sorter)/yamls/parameters.yaml" />
+    <rosparam command="load" file="$(find multilane_sorter)/yamls/decision.yaml" />
+ 
+    <param name="/sortobot/config/relative_path_dev" value="$(find multilane_sorter)"/>
+    <param name="/sortobot/config/relative_path_agro_1" value="$(find multilane_sorter)"/>
+    <param name="/sortobot/config/relative_path_agro_2" value="$(find multilane_sorter)"/>
+    <param name="/sortobot/config/relative_path_agro_3" value="$(find multilane_sorter)"/>
+
+    <group if="$(arg lane_1)" ns="lane_1">
+
+        <node if="$(arg offline)" pkg="multilane_sorter" type="imageFolderPub.py" name="image_act_pub">
+            <remap from="image_raw" to="actuator/image_raw"/>
+                            
+        </node>
+        <node if="$(arg offline)" pkg="multilane_sorter" type="imageFolderPub.py" name="image_non_act_pub">
+            <remap from="image_raw" to="non_actuator/image_raw"/>            
+        </node>
+        
+        <node unless="$(arg offline)" pkg="mvs_ros_pkg"
+            type="grabImgWithTrigger" name="actuator_camera" args="$(find multilane_sorter)/config/camera_11.yaml"  
+            respawn="false" output="screen" />
+        
+          
+        <node unless="$(arg offline)" pkg="mvs_ros_pkg" 
+            type="grabImgWithTrigger" name="non_actuator_camera" args="$(find multilane_sorter)/config/camera_12.yaml" 
+            respawn="false" output="screen"/>
+
+    </group>        
+
+    <group if="$(arg lane_2)" ns="lane_2">
+
+       <node unless="$(arg offline)" pkg="mvs_ros_pkg"
+        type="grabImgWithTrigger" name="actuator_camera" args="$(find multilane_sorter)/config/camera_21.yaml" 
+        respawn="false" output="screen" />
+            
+            
+        <node unless="$(arg offline)" pkg="mvs_ros_pkg" 
+        type="grabImgWithTrigger" name="non_actuator_camera" args="$(find multilane_sorter)/config/camera_22.yaml"
+        respawn="false" output="screen"/>
+
+         <node if="$(arg offline)" pkg="multilane_sorter" type="imageFolderPub.py" name="image_act_pub">
+            <remap from="image_raw" to="actuator/image_raw"/>
+                            
+        </node>
+        <node if="$(arg offline)" pkg="multilane_sorter" type="imageFolderPub.py" name="image_non_act_pub">
+            <remap from="image_raw" to="non_actuator/image_raw"/>            
+        </node>
+
+
+    </group>      
+</launch>        

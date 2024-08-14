@@ -1,0 +1,42 @@
+decisionParams:
+
+  size:
+    min: 55
+    max: 100
+  tolerances:
+    summer : 
+      highQuality:    
+        defect:
+          black_smut: 15 
+          peel: 20    
+      mediumQuality:    
+        defect:
+          black_smut: 30  #bs
+          peel: 30 #15  #peels
+      lowQuality:    
+        defect:
+          black_smut: 20 #20 
+          peel: 30 #30
+
+    winter:
+      highQuality:    
+        defect:
+          black_smut: 8 
+          peel: 15
+      mediumQuality:    
+        defect:
+          black_smut: 15
+          peel: 25
+      lowQuality:    
+        defect:
+          black_smut: 20 #20 
+          peel: 35 #30
+
+sortobot:
+  lane_1:
+    multiplier: 0.08
+  lane_2:
+    multiplier: 0.08   
+  model_in_use: '/home/agrograde/jalna_ws/src/multilane_sorter/assets/final_models/classifier.pth'
+  current_season: summer
+  current_quality: mediumQuality

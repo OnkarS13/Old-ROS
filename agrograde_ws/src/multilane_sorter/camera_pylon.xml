@@ -1,0 +1,101 @@
+<launch>
+    <arg name="offline"                 default="true"/>
+    <arg name="offline_camera_rate"     default="4"/>     
+    <arg name="video_file_path"         default=""/>      
+    
+    <arg name="respawn" default="false" />
+    <arg name="debug" default="false" />
+
+    <arg name="startup_user_set" default="CurrentSetting" />
+    <arg name="serial_actuator"         default=""/>
+    <arg name="serial_non_actuator"     default=""/>
+    <arg name="enable_status_publisher" default="true" />
+    <arg name="enable_current_params_publisher" default="true" />
+
+    <arg name="frame_rate"              default="30"/>
+
+    <arg name="timestamp_method"        default="start"/> 
+    <arg name="auto_exposure"           default="0"/> 
+    <arg name="exposure"                default="60"/> 
+    <arg name="gain"                    default="15"/> 
+    <arg name="auto_white_balance"      default="false"/>
+    <arg name="config_file_act" default="" />    
+    <arg name="config_file_nonact" default="" />
+    
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
+
+
+    <!-- =============================== RUN ONLINE =================================== -->
+    <node unless="$(arg offline)" name="camera_actuator_node" pkg="pylon_camera" type="pylon_camera_node" output="screen" respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
+        <rosparam command="load" file="$(arg config_file_act)" />
+        <param name="startup_user_set" value="$(arg startup_user_set)"/>
+        <param name="enable_status_publisher" value="$(arg enable_status_publisher)"/>
+        <param name="enable_current_params_publisher" value="$(arg enable_current_params_publisher)"/>
+        
+        <remap from="image_raw" to="actuator/image_raw"/>
+        <remap from="camera_info" to="actuator/camera_info"/>
+    </node>
+
+    <node unless="$(arg offline)" name="camera_non_actuator_node" pkg="pylon_camera" type="pylon_camera_node" output="screen" respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
+        <rosparam command="load" file="$(arg config_file_nonact)" />
+        <param name="startup_user_set" value="$(arg startup_user_set)"/>
+        <param name="enable_status_publisher" value="$(arg enable_status_publisher)"/>
+        <param name="enable_current_params_publisher" value="$(arg enable_current_params_publisher)"/>
+        
+        <remap from="image_raw" to="non_actuator/image_raw"/>
+        <remap from="camera_info" to="non_actuator/camera_info"/>
+    </node>
+    <!-- =================================== END ======================================== -->
+    
+    <!-- =============================== RUN OFF-LINE =================================== -->
+   <include if="$(arg offline)" file="$(find video_stream_opencv)/launch/camera.launch" >
+        <arg name="camera_name" value="non_actuator" />
+        <arg name="video_stream_provider" value="$(arg video_file_path)"/>
+        <arg name="buffer_queue_size" value="1000" />
+        <arg name="fps" value="$(arg offline_camera_rate)"/>
+        <arg name="frame_id" value="" />
+        <arg name="camera_info_url" value="" />
+        <arg name="flip_horizontal" value="false" />
+        <arg name="flip_vertical" value="false" />
+        <arg name="loop_videofile" value="true" />
+        <arg name="start_frame" default="0"/>
+        <arg name="stop_frame" default="-1"/>
+        <arg name="visualize" value="false" />
+   </include>
+
+   <include if="$(arg offline)" file="$(find video_stream_opencv)/launch/camera.launch" >
+        <arg name="camera_name" value="actuator" />
+        <arg name="video_stream_provider" value="$(arg video_file_path)"/>
+        <arg name="buffer_queue_size" value="1000" />
+        <arg name="fps" value="$(arg offline_camera_rate)"/>
+        <arg name="frame_id" value="" />
+        <arg name="camera_info_url" value="" />
+        <arg name="flip_horizontal" value="false" />
+        <arg name="flip_vertical" value="false" />
+        <arg name="loop_videofile" value="true" />
+        <arg name="start_frame" default="0"/>
+        <arg name="stop_frame" default="-1"/>
+        <arg name="visualize" value="false" />
+   </include>
+   
+    <!--    
+    <node if="$(arg offline)" pkg="agrograde_core" type="cameraNode.py" name="camera_actuator_node" output="screen" respawn="true">
+        <param name="offline_camera_rate"       value="$(arg offline_camera_rate)"/>
+        <param name="video_file_path"           value="$(arg video_file_path)"/>
+       
+        <remap from="/image_raw"                to="actuator/image_raw"/>
+        <remap from="/camera_info"              to="actuator/camera_info"/>
+    </node>
+    
+    <node if="$(arg offline)" pkg="agrograde_core" type="cameraNode.py" name="camera_non_actuator_node" output="screen" respawn="true">
+        <param name="offline_camera_rate"       value="$(arg offline_camera_rate)"/>
+        <param name="video_file_path"           value="$(arg video_file_path)"/>
+        
+        <remap from="/image_raw"                to="non_actuator/image_raw"/>
+        <remap from="/camera_info"              to="non_actuator/camera_info"/>
+    </node>
+     -->
+    <!-- =================================== END ======================================== -->
+
+</launch>

@@ -1,0 +1,37 @@
+sortobot:
+  config:
+    currentCriteria: mediumQuality
+    decisionCriteria:
+      highQuality: 0
+      lowQuality: 2
+      mediumQuality: 1
+    orderID: SM2022112119412
+    relative_path_agro_1: /home/agrograde/agrograde_ws/src/multilane_sorter
+    relative_path_agro_2: /home/agrograde/agrograde_ws/src/multilane_sorter
+    relative_path_agro_3: /home/agrograde/agrograde_ws/src/multilane_sorter
+    relative_path_dev: /home/agrograde/agrograde_ws/src/multilane_sorter
+    signal_status: '1'
+    sort_on_start: 'true'
+    total_bin: 3
+    total_defect: 5
+  database_config:
+    db_alldata_table: allLocalData
+    db_name: sortobot
+    db_table: tempData
+    summary_db_name: sortobot_summary
+    summary_table: summaryData
+  gui:
+    status: 1
+  models:
+    in_use: summer
+    name:
+      summer: /home/agrograde/agrograde_wssrc/multilane_sorter/assets/Work1/pruned_clf.pth
+      winter: /home/agrograde/agrograde_wssrc/multilane_sorter/assets/Work1/pruned_clf.pth
+    shape:
+      color: 400
+      defect: 224
+      segmentation: 224
+  multiplier:
+    lane_1: 0.345
+    lane_2: 0.345
+  size_offset: '+2'

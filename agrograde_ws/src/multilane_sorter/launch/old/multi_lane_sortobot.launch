@@ -1,0 +1,24 @@
+<launch>
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+        <arg name="port" value="9090"/>
+    </include>
+
+    <rosparam command="load" file="$(find multilane_sorter)/src/MultiLaneSortobot/yamls/parameters.yaml" />
+    <rosparam command="load" file="$(find multilane_sorter)/src/MultiLaneSortobot/yamls/decision.yaml" />
+    
+    <node name="CameraNode_1" pkg="multilane_sorter" type="cameraNode_2.py"  respawn="false"/> 
+    <node name="CameraNode_2" pkg="multilane_sorter" type="cameraNode_1.py"  respawn="false"/> 
+    <!-- <node name="CameraNode_1" pkg="multilane_sorter" type="cameraNode_backup.py" />  -->
+    <node name="ProcessingNode_12" pkg="multilane_sorter" type="aiNode.py" output = "screen" />
+
+    <node name="DecisionNode_12" pkg="multilane_sorter" type="decisionNode.py" output = "screen"/>
+    <node name="SignalNode_12" pkg="multilane_sorter" type="signalingNode.py"  /> 
+
+    <node name="DataSaverNode_12" pkg="multilane_sorter" type="dataSaverNode.py"  /> 
+    <node name="PostProcessingNode_12" pkg="multilane_sorter" type="postprocessingNode.py"/>  
+    <node name="LoggerNode_12" pkg="multilane_sorter" type="loggerNode.py"  />  
+
+    <node name="GUINode" pkg="multilane_sorter" type="guiDataNode.py" output = "screen" />  
+   
+      
+</launch>

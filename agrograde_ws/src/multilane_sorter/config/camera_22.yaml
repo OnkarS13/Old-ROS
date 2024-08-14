@@ -1,0 +1,25 @@
+%YAML:1.0
+
+#--------------------------------------------------------------------------------------------
+# Camera Parameters. Adjust them!
+#--------------------------------------------------------------------------------------------
+
+SerialNumber: "K44921333"
+
+CameraName: "camera_22"
+
+# Ros topic name
+TopicName: "non_actuator/image_raw"
+
+# Exposure Auto, 0 stands for Off, 1 stands for Once, 2 stands for Continues
+# ExposureAuto: 2
+# AutoExposureTimeLower: 275
+# AutoExposureTimeUpper: 300
+# Gain Auto, 0 stands for Off, 1 stands for Once, 2 stands for Continues
+# GainAuto: 0
+
+# Gamma Selector, 0 stands for user, 1 stands for sRGB
+# GammaSelector: 1
+
+# ExposureTime: 130
+# Gain: 2

@@ -1,0 +1,119 @@
+<launch>
+    <arg name="run_offline"     default="false"  doc=""/>
+    <arg name="offline_camera_rate"     default="4"  doc=""/>
+
+
+    <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
+        <arg name="port" value="9090"/>
+    </include> -->
+
+    <rosparam command="load" file="$(find multilane_sorter)/yamls/parameters.yaml" />
+    <rosparam command="load" file="$(find multilane_sorter)/yamls/decision.yaml" />
+    <param name="/sortobot/config/relative_path_dev" value="$(find multilane_sorter)"/>
+    <param name="/sortobot/config/relative_path_agro_1" value="$(find multilane_sorter)"/>
+    <param name="/sortobot/config/relative_path_agro_2" value="$(find multilane_sorter)"/>
+    
+    <node name="param_update_node" pkg="multilane_sorter" type="paramUpdateNode.py" />
+        
+    <!-- Lane 1 -->
+    <group ns="lane_1">
+
+        <include file="$(find multilane_sorter)/launch/include/camera.xml">
+            <arg name="lane_number"         value="1"/> 
+
+            <arg name="run_offline"         value="$(arg run_offline)"/>
+            <arg name="offline_camera_rate" value="$(arg offline_camera_rate)"/>
+            <arg name="video_file_path"     value="$(find multilane_sorter)/assets/demo_onion_1.mp4"  />
+
+            <arg name="serialnumber"        value="40087103"/>                                            
+            <arg name="first_cam"           value="0"/>
+            <arg name="pulse_capture"       value="FE"/>
+
+            <arg name="respawn"             value="false"/>
+            <arg name="respawn_delay"       value="0"/>
+        </include>
+<!-- 
+        <node name="ai_node" pkg="multilane_sorter" type="aiNode.py" output = "screen" >
+            <remap from="~image" to="camera_node/image"/>
+        </node> 
+
+        <node name="decision_node" pkg="multilane_sorter" type="decisionNode.py" output = "screen">
+            <remap from="~ai_inference_channel" to="ai_node/ai_inference_channel"/>
+        </node> 
+
+        <node name="signaling_node" pkg="multilane_sorter" type="signalingNode.py" > 
+            <param name="arduino_num"  value="L1"/>
+            <remap from="~decision_assignment_channel"  to="decision_node/decision_assignment_channel"/>
+            <remap from="~image"                        to="camera_node/image"/>
+        </node> 
+
+        <node name="postprocessing_node" pkg="multilane_sorter" type="postprocessingNode.py">  
+            <remap from="~ai_inference_channel"  to="ai_node/ai_inference_channel"/>
+            <remap from="~postprocessing"  to="postprocessing"/>
+        </node>
+        
+        <node name="datasaver_node" pkg="multilane_sorter" type="dataSaverNode.py">  
+            <remap from="~ai_inference_channel"  to="ai_node/ai_inference_channel"/>
+        </node>
+
+        <node name="logger_Node" pkg="multilane_sorter" type="loggerNode.py">  
+            <remap from="~image"  to="camera_node/image"/>
+            <remap from="~ir_pulse_channel"  to="camera_node/ir_pulse_channel"/>
+            <remap from="~ai_inference_channel"  to="ai_node/ai_inference_channel"/>
+            <remap from="~decision_assignment_channel"  to="decision_node/decision_assignment_channel"/>
+            <remap from="~outbound_signal_channel"  to="signaling_node/outbound_signal_channel"/>
+        </node>  -->
+
+    </group>
+
+    <!-- Lane 2 -->
+    <!-- <group ns="lane_2">
+        <include file="$(find multilane_sorter)/launch/include/camera.xml">
+            <arg name="lane_number"     value="2"/> 
+
+            <arg name="run_offline"     value="$(arg run_offline)"/>
+            <arg name="offline_camera_rate" value="$(arg offline_camera_rate)"/>
+            <arg name="video_file_path" value="$(find multilane_sorter)/assets/demo_onion_2.mp4"  />
+
+            <arg name="serialnumber"    value="40087102"/>                                            
+            <arg name="first_cam"       value="1"/>
+            <arg name="pulse_capture"   value="RE"/>
+
+            <arg name="respawn"         value="false"/>
+            <arg name="respawn_delay"   value="0"/>
+        </include>
+    
+        <node name="ai_node" pkg="multilane_sorter" type="aiNode.py" output = "screen" >
+            <remap from="~image" to="camera_node/image"/>
+        </node> 
+
+        <node name="decision_node" pkg="multilane_sorter" type="decisionNode.py" output = "screen">
+            <remap from="~ai_inference_channel" to="ai_node/ai_inference_channel"/>
+        </node> 
+
+        <node name="signaling_node" pkg="multilane_sorter" type="signalingNode.py" > 
+            <param name="arduino_num"  value="L1"/>
+            <remap from="~decision_assignment_channel"  to="decision_node/decision_assignment_channel"/>
+            <remap from="~image"                        to="camera_node/image"/>
+        </node> 
+
+        <node name="postprocessing_node" pkg="multilane_sorter" type="postprocessingNode.py">  
+            <remap from="~ai_inference_channel"  to="ai_node/ai_inference_channel"/>
+            <remap from="~postprocessing"  to="postprocessing"/>
+        </node>
+        
+        <node name="datasaver_node" pkg="multilane_sorter" type="dataSaverNode.py">  
+            <remap from="~ai_inference_channel"  to="ai_node/ai_inference_channel"/>
+        </node>
+
+        <node name="logger_Node" pkg="multilane_sorter" type="loggerNode.py">  
+            <remap from="~image"  to="camera_node/image"/>
+            <remap from="~ir_pulse_channel"  to="camera_node/ir_pulse_channel"/>
+            <remap from="~ai_inference_channel"  to="ai_node/ai_inference_channel"/>
+            <remap from="~decision_assignment_channel"  to="decision_node/decision_assignment_channel"/>
+            <remap from="~outbound_signal_channel"  to="signaling_node/outbound_signal_channel"/>
+        </node> 
+    </group> -->
+
+
+</launch>

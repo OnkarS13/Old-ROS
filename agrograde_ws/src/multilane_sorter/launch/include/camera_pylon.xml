@@ -1,0 +1,75 @@
+<launch>
+    <arg name="offline"                 default="true"/>   
+    <arg name="respawn" default="false" />
+    <arg name="debug" default="false" />
+
+    <arg name="startup_user_set" default="CurrentSetting" />
+    <arg name="serial_actuator"         default=""/>
+    <arg name="serial_non_actuator"     default=""/>
+    <arg name="enable_status_publisher" default="true" />
+    <arg name="enable_current_params_publisher" default="true" />
+
+    <arg name="frame_rate"              default="30"/>
+
+    <arg name="timestamp_method"        default="start"/> 
+    <arg name="auto_exposure"           default="0"/> 
+    <arg name="exposure"                default="60"/>  
+    <arg name="gain"                    default="15"/> 
+    <arg name="auto_white_balance"      default="false"/>
+    <arg name="config_file_act" default="" />    
+    <arg name="config_file_nonact" default="" />
+    
+    <arg unless="$(arg debug)" name="launch_prefix" value="" />
+    <arg     if="$(arg debug)" name="launch_prefix" value="gdb -ex run --args" />
+
+    <node pkg="rosservice" type="rosservice" name="rosservice_act" args="call --wait /lane_1/camera_actuator_node/set_trigger_source 'value: 1'"/>
+    <node pkg="rosservice" type="rosservice" name="rosservice_nonact" args="call --wait /lane_1/camera_non_actuator_node/set_trigger_source 'value: 1'"/>
+    
+
+    <node pkg="rosservice" type="rosservice" name="rosservice_act2" args="call --wait /lane_2/camera_actuator_node/set_trigger_source 'value: 1'"/>
+    <node pkg="rosservice" type="rosservice" name="rosservice_nonact2" args="call --wait /lane_2/camera_non_actuator_node/set_trigger_source 'value: 1'"/>
+        
+
+    <!-- =============================== RUN ONLINE =================================== -->
+    <!-- <node unless="$(arg offline)" pkg="mvs_ros_pkg"
+    type="grabImgWithTrigger" name="left_camera" args="$(find mvs_ros_pkg)/config/left_camera_trigger.yaml" respawn="true" output="screen" />
+
+    <node unless="$(arg offline)" pkg="mvs_ros_pkg" 
+    type="grabImgWithTrigger" name="right_camera" args="$(find mvs_ros_pkg)/config/right_camera_trigger.yaml" respawn="true" output="screen"/> -->
+
+
+    <node unless="$(arg offline)" name="camera_actuator_node" pkg="pylon_camera" type="pylon_camera_node" respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
+        <rosparam command="load" file="$(arg config_file_act)" />
+        <param name="startup_user_set" value="$(arg startup_user_set)"/>
+        <param name="enable_status_publisher" value="$(arg enable_status_publisher)"/>
+        <param name="enable_current_params_publisher" value="$(arg enable_current_params_publisher)"/>
+        
+        <remap from="~image_raw" to="actuator/image_raw"/>
+        <remap from="camera_info" to="actuator/camera_info"/>
+    </node>
+
+    <node unless="$(arg offline)" name="camera_non_actuator_node" pkg="pylon_camera" type="pylon_camera_node" respawn="$(arg respawn)" launch-prefix="$(arg launch_prefix)">
+        <rosparam command="load" file="$(arg config_file_nonact)" />
+        <param name="startup_user_set" value="$(arg startup_user_set)"/>
+        <param name="enable_status_publisher" value="$(arg enable_status_publisher)"/>
+        <param name="enable_current_params_publisher" value="$(arg enable_current_params_publisher)"/>
+        
+        <remap from="~image_raw" to="non_actuator/image_raw"/>
+        <remap from="camera_info" to="non_actuator/camera_info"/>
+    </node>
+
+        <!-- =================================== END ======================================== -->
+
+    <!-- =============================== RUN OFF-LINE =================================== -->
+
+    <node if="$(arg offline)" pkg="multilane_sorter" type="imageFolderPub.py" name="actuator" respawn="$(arg respawn)">                 
+    </node>
+
+    <node if="$(arg offline)" pkg="multilane_sorter" type="imageFolderPub.py" name="non_actuator" respawn="$(arg respawn)">
+    </node> 
+
+
+     
+    <!-- =================================== END ======================================== -->
+
+</launch>
